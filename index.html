@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WINGLIST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, #444, #222);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .left {
+      font-weight: 600;
+      color: #ff4c3b;
+      font-size: 24px;
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+    }
+
+    .balance {
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .balance input {
+      width: 80px;
+      font-size: 16px;
+      background: transparent;
+      border: none;
+      color: white;
+      border-bottom: 1px dashed white;
+      text-align: right;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #fff;
+      transition: 0.3s;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #2a2a2a;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+      flex-direction: column;
+      min-width: 120px;
+      z-index: 100;
+    }
+
+    .avatar:hover + .dropdown,
+    .dropdown:hover {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      padding: 5px;
+      text-decoration: none;
+    }
+
+    .promo-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px auto;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bonus {
+      background: linear-gradient(to right, #f00, #f90);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      font-size: 18px;
+    }
+
+    .code-block {
+      display: flex;
+      background: #1c1c2c;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .code {
+      background: #293fff;
+      color: #fff;
+      padding: 10px 15px;
+    }
+
+    .timer {
+      background: #990000;
+      color: #fff;
+      padding: 10px 15px;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 0 20px;
+      color: #fff6d5;
+      font-weight: 500;
+      font-size: 24px;
+    }
+
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 60px;
+    }
+
+    .case {
+      aspect-ratio: 4 / 3;
+      background-color: #aaa;
+      border: 2px solid red;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .case img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transition: 0.3s ease;
+      flex-grow: 1;
+    }
+
+    .case-price {
+      background: #111;
+      padding: 5px;
+      font-size: 16px;
+      text-align: center;
+      border-top: 1px solid #333;
+      cursor: pointer;
+    }
+
+    .case-price input {
+      width: 60px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed white;
+      color: white;
+      font-size: 16px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .overlay video {
+      width: 80%;
+      max-width: 800px;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    /* 🔥 Добавлен стиль тряски */
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="left">WINGLIST<br><span style="font-size: 14px; color: #fff">У нас выигрывают!</span></div>
+    <div class="right">
+      <div class="balance" ondblclick="enableBalanceEdit()">
+        <span id="balanceText">Баланс: <span id="balanceValue">1000</span> ꙮ</span>
+        <input type="number" id="balanceInput" style="display:none;" onblur="saveBalance()" />
+      </div>
+      <div class="avatar">
+        <img src="avatar.png" alt="Аватар">
+      </div>
+      <div class="dropdown">
+        <a href="#">Профиль</a>
+        <a href="#">Настройки</a>
+        <a href="#">Выход</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo-block">
+    <div class="bonus">+30% НА СЧЕТ</div>
+    <div class="code-block">
+      <div class="code">GLISTOK</div>
+      <div class="timer" id="timer">ОСТАЛОСЬ: 03:35:00</div>
+    </div>
+  </div>
+
+  <h2>СЕРИЙНЫЕ КЕЙСЫ</h2>
+
+  <div class="cases" id="caseContainer"></div>
+
+  <div class="overlay" id="overlay" onclick="closeOverlay()">
+    <video id="caseVideo" autoplay controls></video>
+  </div>
+
+  <!-- 🔊 Добавлен аудиофайл ошибки -->
+  <audio id="errorSound" src="error_sound.mp3" preload="auto"></audio>
+
+  <script>
+    const casePrices = [100, 150, 200, 250, 300, 120, 180, 220, 260, 310, 130, 190, 240, 270, 350];
+    const totalCases = 15;
+    const caseContainer = document.getElementById("caseContainer");
+
+    function getBalance() {
+      return parseInt(document.getElementById("balanceValue").innerText);
+    }
+
+    function setBalance(val) {
+      document.getElementById("balanceValue").innerText = val;
+    }
+
+    function enableBalanceEdit() {
+      const span = document.getElementById("balanceText");
+      const input = document.getElementById("balanceInput");
+      input.value = getBalance();
+      span.style.display = "none";
+      input.style.display = "inline";
+      input.focus();
+    }
+
+    function saveBalance() {
+      const input = document.getElementById("balanceInput");
+      const span = document.getElementById("balanceText");
+      setBalance(parseInt(input.value) || 0);
+      input.style.display = "none";
+      span.style.display = "inline";
+    }
+
+    function openCase(n, price) {
+      let balance = getBalance();
+      const caseEl = document.querySelectorAll('.case')[n - 1];
+      if (balance < price) {
+        const errorSound = document.getElementById("errorSound");
+        if (errorSound) errorSound.play();
+        if (caseEl) {
+          caseEl.classList.add('shake');
+          setTimeout(() => caseEl.classList.remove('shake'), 500);
+        }
+        return;
+      }
+      setBalance(balance - price);
+      const overlay = document.getElementById('overlay');
+      const video = document.getElementById('caseVideo');
+      video.src = `video${n}.mp4`;
+      overlay.classList.add('active');
+    }
+
+    function closeOverlay() {
+      const overlay = document.getElementById('overlay');
+      const video = document.getElementById('caseVideo');
+      video.pause();
+      video.src = '';
+      overlay.classList.remove('active');
+    }
+
+    for (let i = 1; i <= totalCases; i++) {
+      const price = casePrices[i - 1] || 100;
+      const div = document.createElement("div");
+      div.className = "case";
+      div.innerHTML = `
+        <img src="case${i}_closed.png" alt="case${i}"
+          onmouseenter="this.src='case${i}_open.png'" 
+          onmouseleave="this.src='case${i}_closed.png'"
+          onclick="openCase(${i}, ${price})"
+        >
+        <div class="case-price" ondblclick="editPrice(${i - 1}, this)">
+          <span>${price} ꙮ</span>
+        </div>
+      `;
+      caseContainer.appendChild(div);
+    }
+
+    function editPrice(index, elem) {
+      const oldPrice = casePrices[index];
+      elem.innerHTML = `<input type="number" value="${oldPrice}" onblur="savePrice(this, ${index})" />`;
+      const input = elem.querySelector('input');
+      input.focus();
+    }
+
+    function savePrice(input, index) {
+      const newPrice = parseInt(input.value) || 0;
+      casePrices[index] = newPrice;
+      input.parentElement.innerHTML = `<span>${newPrice} ꙮ</span>`;
+    }
+
+    const timerElement = document.getElementById("timer");
+    let countdown = 3 * 3600 + 35 * 60;
+    function updateTimer() {
+      if (countdown <= 0) return;
+      countdown--;
+      const h = String(Math.floor(countdown / 3600)).padStart(2, '0');
+      const m = String(Math.floor((countdown % 3600) / 60)).padStart(2, '0');
+      const s = String(countdown % 60).padStart(2, '0');
+      timerElement.textContent = `ОСТАЛОСЬ: ${h}:${m}:${s}`;
+    }
+    setInterval(updateTimer, 1000);
+  </script>
+
+</body>
+</html>
