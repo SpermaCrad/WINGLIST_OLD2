@@ -14,6 +14,29 @@
       overflow-x: hidden;
     }
 
+    /* Стили для стрелки */
+    .arrow-container {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(255, 0, 0, 0.2); /* Временный фон для отладки */
+    }
+
+    .arrow {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Остальные стили остаются без изменений */
     .header {
       display: flex;
       justify-content: space-between;
@@ -27,11 +50,16 @@
       font-size: 24px;
     }
 
+    .left span {
+      color: white;
+      font-size: 14px;
+      display: block;
+    }
+
     .right {
       display: flex;
       align-items: center;
       gap: 15px;
-      position: relative;
     }
 
     .balance {
@@ -56,37 +84,12 @@
       overflow: hidden;
       cursor: pointer;
       border: 2px solid #fff;
-      transition: 0.3s;
     }
 
     .avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 50px;
-      right: 0;
-      background: #2a2a2a;
-      padding: 10px;
-      border-radius: 6px;
-      display: none;
-      flex-direction: column;
-      min-width: 120px;
-      z-index: 100;
-    }
-
-    .avatar:hover + .dropdown,
-    .dropdown:hover {
-      display: flex;
-    }
-
-    .dropdown a {
-      color: white;
-      padding: 5px;
-      text-decoration: none;
     }
 
     .promo-block {
@@ -103,7 +106,6 @@
       padding: 10px 20px;
       border-radius: 8px;
       font-weight: 600;
-      color: white;
       font-size: 18px;
     }
 
@@ -152,17 +154,13 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
     }
 
     .case img {
       width: 100%;
       height: auto;
       object-fit: cover;
-      transition: 0.3s ease;
-      flex-grow: 1;
+      display: block;
     }
 
     .case-price {
@@ -170,41 +168,122 @@
       padding: 5px;
       font-size: 16px;
       text-align: center;
-      border-top: 1px solid #333;
-      cursor: pointer;
-    }
-
-    .case-price input {
-      width: 60px;
-      text-align: center;
-      background: transparent;
-      border: none;
-      border-bottom: 1px dashed white;
-      color: white;
-      font-size: 16px;
     }
 
     .overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 10;
-    }
-
-    .overlay video {
-      width: 80%;
-      max-width: 800px;
+      flex-direction: column;
+      z-index: 999;
     }
 
     .overlay.active {
       display: flex;
     }
 
-    /* 🔥 Добавлен стиль тряски */
+    .roulette {
+      display: flex;
+      overflow: hidden;
+      width: 80%;
+      max-width: 900px;
+      height: 180px;
+      position: relative;
+    }
+
+    .roulette-track {
+      display: flex;
+      transition: transform 5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+    }
+
+    .roulette-track img {
+      height: 180px;
+      margin-right: 10px;
+      border-radius: 8px;
+    }
+
+    .result {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      max-height: 220px;
+      z-index: 1002;
+      transition: transform 0.5s ease;
+      pointer-events: none;
+    }
+
+    .result.show {
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+
+    .drop-actions {
+      margin-top: 20px;
+      display: none;
+      gap: 15px;
+      z-index: 1003;
+    }
+
+    .drop-actions button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #ff4c3b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .inventory {
+      display: none;
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #222;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .inventory h3 {
+      margin-bottom: 10px;
+    }
+
+    .inventory-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .inventory-item {
+      background: #333;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .inventory-item img {
+      width: 120px;
+      height: auto;
+    }
+
+    .inventory-item button {
+      margin-top: 5px;
+      background: #ff4c3b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+
     .shake {
       animation: shake 0.5s;
     }
@@ -217,24 +296,24 @@
       80% { transform: translateX(5px); }
       100% { transform: translateX(0); }
     }
+
+    .winning-drop {
+      border: 3px solid gold !important;
+      box-shadow: 0 0 10px gold;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <div class="left">WINGLIST<br><span style="font-size: 14px; color: #fff">У нас выигрывают!</span></div>
+    <div class="left">WINGLIST<br><span>У нас выигрывают!</span></div>
     <div class="right">
       <div class="balance" ondblclick="enableBalanceEdit()">
         <span id="balanceText">Баланс: <span id="balanceValue">1000</span> ꙮ</span>
         <input type="number" id="balanceInput" style="display:none;" onblur="saveBalance()" />
       </div>
-      <div class="avatar">
+      <div class="avatar" onclick="toggleInventory()">
         <img src="avatar.png" alt="Аватар">
-      </div>
-      <div class="dropdown">
-        <a href="#">Профиль</a>
-        <a href="#">Настройки</a>
-        <a href="#">Выход</a>
       </div>
     </div>
   </div>
@@ -248,115 +327,283 @@
   </div>
 
   <h2>СЕРИЙНЫЕ КЕЙСЫ</h2>
-
   <div class="cases" id="caseContainer"></div>
 
-  <div class="overlay" id="overlay" onclick="closeOverlay()">
-    <video id="caseVideo" autoplay controls></video>
+  <div class="overlay" id="rouletteOverlay">
+    <div class="roulette">
+      <div class="arrow-container">
+        <img src="arrow.png" class="arrow" alt="Arrow" id="rouletteArrow">
+      </div>
+      <div class="roulette-track" id="rouletteTrack"></div>
+    </div>
+    <img class="result" id="resultImg" />
+    <div class="drop-actions" id="dropActions">
+      <button onclick="sellDrop()">Продать</button>
+      <button onclick="keepDrop()">Оставить</button>
+    </div>
   </div>
 
-  <!-- 🔊 Добавлен аудиофайл ошибки -->
-  <audio id="errorSound" src="error_sound.mp3" preload="auto"></audio>
+  <div class="inventory" id="inventory">
+    <h3>Инвентарь</h3>
+    <div class="inventory-items" id="inventoryItems"></div>
+  </div>
 
+  <audio id="errorSound" src="error_sound.mp3" preload="auto"></audio>
+  <audio id="rollSound" preload="auto"></audio>
+  <audio id="dropSound" preload="auto"></audio>
   <script>
     const casePrices = [100, 150, 200, 250, 300, 120, 180, 220, 260, 310, 130, 190, 240, 270, 350];
     const totalCases = 15;
     const caseContainer = document.getElementById("caseContainer");
+    const inventoryItems = document.getElementById("inventoryItems");
+    const inventoryBox = document.getElementById("inventory");
+    let currentDrop = null;
 
     function getBalance() {
-      return parseInt(document.getElementById("balanceValue").innerText);
+      return parseInt(localStorage.getItem("balance") || "1000");
     }
 
     function setBalance(val) {
+      localStorage.setItem("balance", val);
       document.getElementById("balanceValue").innerText = val;
     }
 
     function enableBalanceEdit() {
-      const span = document.getElementById("balanceText");
       const input = document.getElementById("balanceInput");
       input.value = getBalance();
-      span.style.display = "none";
       input.style.display = "inline";
+      document.getElementById("balanceText").style.display = "none";
       input.focus();
     }
 
     function saveBalance() {
       const input = document.getElementById("balanceInput");
-      const span = document.getElementById("balanceText");
       setBalance(parseInt(input.value) || 0);
       input.style.display = "none";
-      span.style.display = "inline";
+      document.getElementById("balanceText").style.display = "inline";
+    }
+
+    function toggleInventory() {
+      inventoryBox.style.display = inventoryBox.style.display === "none" ? "block" : "none";
+      updateInventory();
+    }
+
+    function updateInventory() {
+      const inv = JSON.parse(localStorage.getItem("inventory") || "[]");
+      inventoryItems.innerHTML = "";
+      inv.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "inventory-item";
+        div.innerHTML = `<img src="${item.src}" alt="drop"><div>${item.price} ꙮ</div>
+          <button onclick="sellFromInventory(${i}, ${item.price})">Продать</button>`;
+        inventoryItems.appendChild(div);
+      });
+    }
+
+    function sellFromInventory(index, price) {
+      const inv = JSON.parse(localStorage.getItem("inventory") || "[]");
+      inv.splice(index, 1);
+      localStorage.setItem("inventory", JSON.stringify(inv));
+      setBalance(getBalance() + price);
+      updateInventory();
     }
 
     function openCase(n, price) {
-      let balance = getBalance();
+      const balance = getBalance();
       const caseEl = document.querySelectorAll('.case')[n - 1];
       if (balance < price) {
-        const errorSound = document.getElementById("errorSound");
-        if (errorSound) errorSound.play();
-        if (caseEl) {
-          caseEl.classList.add('shake');
-          setTimeout(() => caseEl.classList.remove('shake'), 500);
-        }
+        document.getElementById("errorSound").play();
+        caseEl.classList.add("shake");
+        setTimeout(() => caseEl.classList.remove("shake"), 500);
         return;
       }
-      setBalance(balance - price);
-      const overlay = document.getElementById('overlay');
-      const video = document.getElementById('caseVideo');
-      video.src = `video${n}.mp4`;
-      overlay.classList.add('active');
+
+      const availableDrops = [];
+      for (let i = 1; i <= 10; i++) {
+        const img = new Image();
+        img.src = `dropcase${n}_${i}.png`;
+        img.onload = () => availableDrops.push(img.src);
+        img.onerror = () => console.log(`Image not found: dropcase${n}_${i}.png`);
+      }
+
+      setTimeout(() => {
+        if (availableDrops.length === 0) {
+          alert("Нет доступных дропов для этого кейса");
+          return;
+        }
+        setBalance(balance - price);
+        startRoulette(n, price, availableDrops);
+      }, 1000);
     }
 
-    function closeOverlay() {
-      const overlay = document.getElementById('overlay');
-      const video = document.getElementById('caseVideo');
-      video.pause();
-      video.src = '';
-      overlay.classList.remove('active');
+    function startRoulette(caseId, price, drops) {
+      const overlay = document.getElementById("rouletteOverlay");
+      const track = document.getElementById("rouletteTrack");
+      const result = document.getElementById("resultImg");
+      const actions = document.getElementById("dropActions");
+      const rollSound = document.getElementById("rollSound");
+      const dropSound = document.getElementById("dropSound");
+      const arrow = document.getElementById("rouletteArrow");
+
+      // Проверяем загрузку стрелки
+      if (!arrow.complete || arrow.naturalWidth === 0) {
+        console.error("Ошибка загрузки изображения стрелки!");
+        arrow.onerror = () => {
+          console.error("Не удалось загрузить изображение стрелки: " + arrow.src);
+        };
+      }
+
+      // Очищаем трек
+      track.innerHTML = "";
+      result.classList.remove("show");
+      result.src = "";
+      actions.style.display = "none";
+      currentDrop = null;
+
+      rollSound.src = `rollcase${caseId}.mp3`;
+      dropSound.src = `dropcase${caseId}.mp3`;
+      rollSound.play();
+
+      const dropElements = [];
+      const realDrops = [];
+
+      // Создаем дропы
+      for (let i = 0; i < 30; i++) {
+        const index = (i % drops.length);
+        const src = drops[index];
+        const img = new Image();
+        img.src = src;
+        img.dataset.index = index; // Сохраняем индекс
+        img.dataset.originalIndex = index; // Сохраняем оригинальный индекс
+        img.style.transition = "all 0.1s"; // Для плавного выделения
+        track.appendChild(img);
+        dropElements.push(img);
+        realDrops.push({ src, price });
+      }
+
+      overlay.classList.add("active");
+
+      // Вычисляем позицию остановки
+      setTimeout(() => {
+        // Случайный индекс для остановки (от 15 до 25)
+        const stopIndex = Math.floor(Math.random() * 10) + 15;
+        const offset = -(stopIndex * 190); // 190 = ширина дропа (180px) + отступ (10px)
+
+        // Анимация прокрутки
+        track.style.transition = "none";
+        track.style.transform = "translateX(0)";
+        void track.offsetWidth;
+        track.style.transition = "transform 5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+        track.style.transform = `translateX(${offset}px)`;
+
+        // После анимации показываем результат
+        setTimeout(() => {
+          rollSound.pause();
+          dropSound.play();
+
+          // Получаем все дропы на треке
+          const dropsOnTrack = track.querySelectorAll('img');
+
+          // Находим элемент, который находится под стрелкой
+          let winningElement = null;
+          let minDistance = Infinity;
+
+          // Получаем положение стрелки
+          const arrowRect = arrow.getBoundingClientRect();
+          const arrowCenter = arrowRect.left + arrowRect.width / 2;
+
+          // Ищем дроп, который ближе всего к центру стрелки
+          dropsOnTrack.forEach(el => {
+            const dropRect = el.getBoundingClientRect();
+            const dropCenter = dropRect.left + dropRect.width / 2;
+            const distance = Math.abs(dropCenter - arrowCenter);
+
+            if (distance < minDistance) {
+              minDistance = distance;
+              winningElement = el;
+            }
+          });
+
+          // Если не нашли подходящий дроп (не должно случиться)
+          if (!winningElement) {
+            winningElement = dropsOnTrack[Math.floor(dropsOnTrack.length / 2)];
+          }
+
+          // Подсвечиваем выигрышный дроп
+          dropsOnTrack.forEach(el => el.classList.remove('winning-drop'));
+          winningElement.classList.add('winning-drop');
+
+          // Получаем индекс выигрышного дропа
+          const winningIndex = parseInt(winningElement.dataset.originalIndex);
+
+          // Выбираем дроп по индексу
+          currentDrop = realDrops[winningIndex];
+          result.src = currentDrop.src;
+          result.classList.add("show");
+          actions.style.display = "flex";
+
+          console.log("Выигрышный дроп:", currentDrop);
+          console.log("Позиция стрелки:", arrowCenter);
+          console.log("Позиция дропа:", winningElement.getBoundingClientRect());
+        }, 5000);
+      }, 50);
     }
 
-    for (let i = 1; i <= totalCases; i++) {
-      const price = casePrices[i - 1] || 100;
-      const div = document.createElement("div");
-      div.className = "case";
-      div.innerHTML = `
-        <img src="case${i}_closed.png" alt="case${i}"
-          onmouseenter="this.src='case${i}_open.png'" 
-          onmouseleave="this.src='case${i}_closed.png'"
-          onclick="openCase(${i}, ${price})"
-        >
-        <div class="case-price" ondblclick="editPrice(${i - 1}, this)">
-          <span>${price} ꙮ</span>
-        </div>
-      `;
-      caseContainer.appendChild(div);
+    function sellDrop() {
+      if (currentDrop) {
+        setBalance(getBalance() + currentDrop.price);
+        closeRoulette();
+      }
     }
 
-    function editPrice(index, elem) {
-      const oldPrice = casePrices[index];
-      elem.innerHTML = `<input type="number" value="${oldPrice}" onblur="savePrice(this, ${index})" />`;
-      const input = elem.querySelector('input');
-      input.focus();
+    function keepDrop() {
+      const inv = JSON.parse(localStorage.getItem("inventory") || "[]");
+      inv.push(currentDrop);
+      localStorage.setItem("inventory", JSON.stringify(inv));
+      closeRoulette();
     }
 
-    function savePrice(input, index) {
-      const newPrice = parseInt(input.value) || 0;
-      casePrices[index] = newPrice;
-      input.parentElement.innerHTML = `<span>${newPrice} ꙮ</span>`;
+    function closeRoulette() {
+      document.getElementById("rouletteOverlay").classList.remove("active");
+      document.getElementById("rouletteTrack").innerHTML = "";
+      document.getElementById("resultImg").classList.remove("show");
+      document.getElementById("dropActions").style.display = "none";
     }
 
-    const timerElement = document.getElementById("timer");
+    // Генерация кейсов
+    window.onload = () => {
+      setBalance(getBalance());
+
+      for (let i = 1; i <= totalCases; i++) {
+        const img = new Image();
+        img.onload = () => {
+          const price = casePrices[i - 1];
+          const div = document.createElement("div");
+          div.className = "case";
+          div.innerHTML = `
+            <img src="case${i}_closed.png" alt="case${i}"
+                 onmouseenter="this.src='case${i}_open.png'"
+                 onmouseleave="this.src='case${i}_closed.png'"
+                 onclick="openCase(${i}, ${price})">
+            <div class="case-price">${price} ꙮ</div>`;
+          caseContainer.appendChild(div);
+        };
+        img.src = `case${i}_closed.png`;
+      }
+    };
+
+    // Таймер
     let countdown = 3 * 3600 + 35 * 60;
-    function updateTimer() {
-      if (countdown <= 0) return;
-      countdown--;
+    const timerElement = document.getElementById("timer");
+    setInterval(() => {
+      if (--countdown < 0) return;
       const h = String(Math.floor(countdown / 3600)).padStart(2, '0');
-      const m = String(Math.floor((countdown % 3600) / 60)).padStart(2, '0');
+      const m = String(Math.floor(countdown % 3600 / 60)).padStart(2, '0');
       const s = String(countdown % 60).padStart(2, '0');
       timerElement.textContent = `ОСТАЛОСЬ: ${h}:${m}:${s}`;
-    }
-    setInterval(updateTimer, 1000);
+    }, 1000);
   </script>
-
 </body>
 </html>
+
+
